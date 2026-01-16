@@ -6,6 +6,7 @@ using Infrastructure.interfaces;
 
 public class TransactionService(ApplicationDbcontext dbcontext) : ITransactionService
 {
+    private readonly ApplicationDbcontext _dbcontext=dbcontext;
     public Task<Response<string>> AddAsync(TransactionDto transactionDto)
     {
         throw new NotImplementedException();
