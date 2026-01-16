@@ -24,7 +24,7 @@ public class UserService(ApplicationDbcontext dbcontext,ILogger<User> logger) : 
              };
             var query ="insert into users(username) values(@Username)";
             var res = await conn.ExecuteAsync(query , new{username=user.UserName});
-            if(res == null)
+            if(res == 0)
              { 
                 return new Response<string>(HttpStatusCode.InternalServerError,"Can not added");
              }
@@ -39,23 +39,38 @@ public class UserService(ApplicationDbcontext dbcontext,ILogger<User> logger) : 
              return new Response<string>(HttpStatusCode.InternalServerError,"Internal Server Error");
         }
     }
-    public Task<Response<string>> DeleteAsync(int userid)
+    public async Task<Response<string>> DeleteAsync(int userid)
     {
-        throw new NotImplementedException();
+        using var conn = _dbcontext.Connection();
+        var query ="delete from users where id=@Id";
+        var res = await conn.ExecuteAsync(query,new{Id=userid});
+        return res==0? new Response<string>(HttpStatusCode.NotFound,"Can not found id for delete"):
+        new Response<string>(HttpStatusCode.OK,"Deleted successfully");
     }
 
-    public Task<List<User>> GetAsync()
+    public async Task<List<User>> GetAsync()
     {
-        throw new NotImplementedException();
+       using var conn = _dbcontext.Connection();
+        var query ="select * from users";
+        var res = await conn.QueryAsync<User>(query);
+        return res.ToList();
     }
 
-    public Task<Response<User>> GetByIdAsync(int userid)
+    public async Task<Response<User>> GetByIdAsync(int userid)
     {
-        throw new NotImplementedException();
+       using var conn = _dbcontext.Connection();
+        var query ="select * from users";
+        var res = await conn.QueryFirstOrDefaultAsync<User>(query,new{Id=userid});
+        return res==null? new Response<User>(HttpStatusCode.NotFound,"Can not found id "):
+        new Response<User>(HttpStatusCode.OK,"Get info successfully");
     }
 
-    public Task<Response<string>> UpdateAsync(User user)
+    public async Task<Response<string>> UpdateAsync(UpdateUserDto updateuser)
     {
-        throw new NotImplementedException();
+         using var conn = _dbcontext.Connection();
+        var query ="update  users set username=@Username where id=@Id";
+        var res = await conn.ExecuteAsync(query,updateuser);
+        return res==0? new Response<string>(HttpStatusCode.NotFound,"Can not update"):
+        new Response<string>(HttpStatusCode.OK,"Updated successfully");
     }
 }
