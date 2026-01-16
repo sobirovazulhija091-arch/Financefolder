@@ -29,6 +29,9 @@ public class TransactionServiceCotroller(ITransactionService transactionService)
     {
         return await transactionService.GetByIdAsync(transactionid);
     }
-
-    public async Task<Response<string>> UpdateAsync(Transaction transaction){}
+[HttpPut]
+    public async Task<Response<string>> UpdateAsync(Transaction transaction)
+    {
+        return await transactionService.UpdateAsync(transaction);
+    }
 }
