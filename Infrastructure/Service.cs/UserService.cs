@@ -59,7 +59,7 @@ public class UserService(ApplicationDbcontext dbcontext,ILogger<User> logger) : 
     public async Task<Response<User>> GetByIdAsync(int userid)
     {
        using var conn = _dbcontext.Connection();
-        var query ="select * from users";
+        var query ="select * from users where id=@Id";
         var res = await conn.QueryFirstOrDefaultAsync<User>(query,new{Id=userid});
         return res==null? new Response<User>(HttpStatusCode.NotFound,"Can not found id "):
         new Response<User>(HttpStatusCode.OK,"Get info successfully");

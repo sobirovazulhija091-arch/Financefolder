@@ -4,7 +4,7 @@ using Infrastructure.Service;
 using Domain.Responses;
 using Domain.Entities;
 using Domain.DTOs;
-namespace Domain.Controllers;
+namespace Webfinance.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 public class UserServiceController(IUserService userService):ControllerBase
