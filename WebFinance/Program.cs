@@ -21,7 +21,7 @@ if (app.Environment.IsDevelopment())
 }
 
  app.MapControllers();
-//  app.UseMiddleware<>();
+ app.UseMiddleware<RequestTimeMiddelware>();
 app.MapOpenApi();
 app.Run();
 
